@@ -35,10 +35,6 @@
 </template>
 
 <script>
-  import Button from '@/components/dynamic/Button'
-  import Header from '@/components/dynamic/Header'
-  import TextInput from '@/components/dynamic/TextInput'
-
   export default {
     name: 'Playground-Async',
 
@@ -50,9 +46,9 @@
         componentList: [
 
           //In prep for async loading, we need to hard code labels (since we don't know component names before we summon component)
-          { label: 'Button', component: Button },
-          { label: 'Header', component: Header },
-          { label: 'TextInput', component: TextInput }
+          { label: 'Button', component: () => import('@/components/dynamic/Button') },
+          { label: 'Header', component: () => import('@/components/dynamic/Header') },
+          { label: 'TextInput', component: () => import('@/components/dynamic/TextInput') }
         ],
 
         //Currently selected Component
