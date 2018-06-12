@@ -26,6 +26,11 @@
     <!--Dynamically populate this component-->
     <component :is="selectedComponent"></component>
 
+    <!--keep-alive caches the :is components to preserve data-->
+    <keep-alive>
+      <component :is="selectedComponent"></component>
+    </keep-alive>
+
   </section>
 </template>
 
