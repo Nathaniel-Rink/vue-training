@@ -13,11 +13,11 @@
       <!--each component in the componentList is a value in the option dropdown-->
       <!-- including a key is best practice so in-place-patch strategy doesn't cause unexpected results-->
       <option
-        v-for="(component, index) in componentList"
+        v-for="(item, index) in componentList"
         :key="index"
-        :value="component"
+        :value="item.component"
       >
-        {{ component.name }}
+        {{ item.label }}
       </option>
     </select>
 
@@ -47,7 +47,13 @@
       return {
 
         //Available components
-        componentList: [Button, Header, TextInput],
+        componentList: [
+
+          //In prep for async loading, we need to hard code labels (since we don't know component names before we summon component)
+          { label: 'Button', component: Button },
+          { label: 'Header', component: Header },
+          { label: 'TextInput', component: TextInput }
+        ],
 
         //Currently selected Component
         selectedComponent: null
