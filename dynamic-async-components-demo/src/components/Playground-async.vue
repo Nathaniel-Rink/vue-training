@@ -21,6 +21,11 @@
       </option>
     </select>
 
+    <hr>
+
+    <!--Dynamically populate this component-->
+    <component :is="selectedComponent"></component>
+
   </section>
 </template>
 
