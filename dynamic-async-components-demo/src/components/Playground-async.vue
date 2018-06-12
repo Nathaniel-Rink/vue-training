@@ -7,6 +7,9 @@
     <!--selectedComponent is 2-way bound to the select value-->
     <select v-model="selectedComponent">
 
+      <!--provide a disabled label option with value null to match initial state of v-model-->
+      <option disabled value=null>Please select one</option>
+
       <!--each component in the componentList is a value in the option dropdown-->
       <!-- including a key is best practice so in-place-patch strategy doesn't cause unexpected results-->
       <option
