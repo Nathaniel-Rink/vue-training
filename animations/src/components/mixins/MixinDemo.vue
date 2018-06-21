@@ -40,8 +40,7 @@
 		border: 1px double lightgrey;
 		border-radius: 6px;
 		padding: 15px;
-		margin:300px;
-		margin-top: 50px;
+		margin: 50px 300px;
 	}
 
 </style>
