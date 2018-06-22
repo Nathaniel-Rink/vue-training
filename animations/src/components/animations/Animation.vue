@@ -20,13 +20,13 @@
 
 <script>
 	//Makes sense to import default names as their assigned names
-	import CSSElementTransition from './animations/CSSElementTransition';
+	import CSSElementTransition from './CSSElementTransition';
 
 	//But you CAN import them by any name as long as the export is default
-	import MadeUpName from './animations/CSSElementAnimation';
+	import MadeUpName from './CSSElementAnimation';
 
 	//Explicitly named exported components must be named correctly on import
-	import JSElementAnimation from './animations/JSElementAnimation';
+	import JSElementAnimation from './JSElementAnimation';
 
 
 	export default {
@@ -55,8 +55,7 @@
 		border: 1px double lightgrey;
 		border-radius: 6px;
 		padding: 15px;
-		margin:300px;
-		margin-top: 50px;
+		margin: 50px 300px;
 	}
 
 </style>
