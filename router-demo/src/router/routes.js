@@ -5,19 +5,23 @@ import WizardOfOz from '../components/WizardOfOz';
 
 export default [
 	{
-		path: '/brave',
+		path: '/',
+		redirect: '/brave'
+	},
+	{
+		path: '/brave/:accused/with/:weapon',
 		component: Braveheart
 	},
 	{
-		path: '/empire',
+		path: '/empire/:accused/with/:weapon',
 		component: Empire
 	},
 	{
-		path: '/mel',
+		path: '/mel/:accused/with/:weapon',
 		component: Hamlet
 	},
 	{
-		path: '/wiz',
+		path: '/wiz/:accused/with/:weapon',
 		component: WizardOfOz
 	}
 ];
