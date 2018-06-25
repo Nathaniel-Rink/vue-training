@@ -1,7 +1,14 @@
 <template>
 	<div>
-		<nav-bar></nav-bar>
-		<router-view></router-view>
+		<div class="row">
+			<div class="col-6">
+				<nav-bar></nav-bar>
+				<router-view></router-view>
+			</div>
+			<div class="col-6">
+			</div>
+		</div>
+
 	</div>
 </template>
 
