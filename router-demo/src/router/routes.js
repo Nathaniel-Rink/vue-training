@@ -2,6 +2,7 @@ import Braveheart from '../components/Braveheart';
 import Empire from '../components/Empire';
 import Hamlet from '../components/Hamlet';
 import WizardOfOz from '../components/WizardOfOz';
+import EasterEgg from '../components/EasterEgg';
 
 export default [
 	{
@@ -10,7 +11,13 @@ export default [
 	},
 	{
 		path: '/brave/:accused/with/:weapon',
-		component: Braveheart
+		component: Braveheart,
+		children: [
+			{
+				path: 'easter-egg',
+				component: EasterEgg
+			}
+]
 	},
 	{
 		path: '/empire/:accused/with/:weapon',
