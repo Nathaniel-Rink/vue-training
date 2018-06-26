@@ -49,6 +49,22 @@ myRouter.afterEach((to, from) => {
 	}
 );
 
+myRouter.beforeEach((to, from, next) => {
+		console.log('GLOBAL-2nd BEFORE EACH WITH META'); //NRHG
+		var matched = to.matched;
+		console.log(`matched: `); //NRHG
+		console.log(matched); //NRHG
+
+		if( matched.some(record => record.meta.requiresAuth) ){
+			console.log('insert auth logic here!');
+			next();
+		}
+		else {
+			next();
+		}
+	}
+);
+
 export default myRouter;
 
 /**
