@@ -13,10 +13,11 @@ const myRouter = new VueRouter({
 //beforeEach resolves in order, and global beforeEach route guards resolve before component guards
 myRouter.beforeEach((to, from, next) => {
 		console.log('GLOBAL-BEFORE EACH'); //NRHG
-		console.log('to object'); //NRHG
-		console.log(to); //NRHG
-		console.log('from object'); //NRHG
-		console.log(from); //NRHG
+		var args = {
+			toObject:to,
+			fromObject: from
+		}
+		console.log(args); //NRHG
 
 		/**Next Options
 		 [empty] - proceed as usual
@@ -31,10 +32,6 @@ myRouter.beforeEach((to, from, next) => {
 //beforeResolve resolves in order and after component guards. The last guard before nav
 myRouter.beforeResolve((to, from, next) => {
 		console.log('GLOBAL-BEFORE RESOLVE'); //NRHG
-		console.log('to object'); //NRHG
-		console.log(to); //NRHG
-		console.log('from object'); //NRHG
-		console.log(from); //NRHG
 
 		/**Next Options
 		 [empty] - proceed as usual
@@ -48,12 +45,25 @@ myRouter.beforeResolve((to, from, next) => {
 
 //afterEach resolve after nav happens. No 'next' because it already occurred
 myRouter.afterEach((to, from) => {
-		console.log('GLOBAL-AFTER RESOLVE'); //NRHG
-		console.log('to object'); //NRHG
-		console.log(to); //NRHG
-		console.log('from object'); //NRHG
-		console.log(from); //NRHG
+		console.log('GLOBAL-AFTER RESOLVE (no next())'); //NRHG
 	}
 );
 
 export default myRouter;
+
+/**
+ The Full Navigation Resolution Flow
+
+ 1 Navigation triggered.
+ 2 Call leave guards in deactivated components.
+ 3 Call global beforeEach guards.
+ 4 Call beforeRouteUpdate guards in reused components.
+ 5 Call beforeEnter in route configs.
+ 6 Resolve async route components.
+ 7 Call beforeRouteEnter in activated components.
+ 8 Call global beforeResolve guards.
+ 9 Navigation confirmed.
+ 10 Call global afterEach hooks.
+ 11 DOM updates triggered.
+ 12 Call callbacks passed to next in beforeRouteEnter guards with instantiated instances.
+ **/

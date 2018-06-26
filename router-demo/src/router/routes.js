@@ -7,11 +7,15 @@ import EasterEgg from '../components/EasterEgg';
 export default [
 	{
 		path: '/',
-		redirect: '/brave'
+		redirect: '/empire'
 	},
 	{
 		path: '/brave/:accused/with/:weapon',
 		component: Braveheart,
+		beforeEnter: (to, from, next) => {
+			console.log('BEFORE ENTER - I am a per-route route guard. I should flash after beforeEach but before beforeResolve!'); //NRHG
+			next();
+		},
 		children: [
 			{
 				path: 'easter-egg',
