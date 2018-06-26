@@ -25,11 +25,15 @@
 				return this.$route.path + '/easter-egg?myQuery=' + this.room;
                         }
                 },
+
+		//Demonstrate 'this' in route guards
                 methods: {
 			helloRoute: function(msg){
 				console.log(msg); //NRHG
                         }
                 },
+
+		//Component route guards
 		beforeRouteEnter (to, from, next) {
 			console.log('COMPONENT - BEFORE ROUTE ENTER - called before the route that renders this component is confirmed'); //NRHG
                         next( (_this) => _this.helloRoute(`CALLBACK - I'm a callback for beforeRouteEnter.next(_this)`));
@@ -41,11 +45,12 @@
 		beforeRouteLeave (to, from, next) {
 			console.log('COMPONENT - BEFORE ROUTE LEAVE - called when the route that renders this component is about to be navigated away from.') //NRHG
 			next( () => this.helloRoute(`CALLBACK - I'm a callback for beforeRouteLeave.next()`));
-
-		}
+		},
 	}
 </script>
 
 <style scoped>
   div { background-color: aqua }
+
+
 </style>

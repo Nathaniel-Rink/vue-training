@@ -3,7 +3,9 @@
 		<div class="row">
 			<div class="col-6">
 				<nav-bar></nav-bar>
-				<router-view></router-view>
+				<transition name="fade" mode="out-in">
+					<router-view></router-view>
+				</transition>
 			</div>
 			<div class="col-6">
 			</div>
@@ -26,5 +28,11 @@
 
 <style lang="scss">
 	@import '../node_modules/bootstrap/scss/bootstrap.scss';
+	.fade-enter-active, .fade-leave-active {
+		transition: opacity .5s;
+	}
+	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+		opacity: 0;
+	}
 </style>
 

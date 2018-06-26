@@ -21,7 +21,12 @@ export default [
 				path: 'easter-egg',
 				component: EasterEgg
 			}
-]
+		],
+
+		//Demo passing meta info INTO route
+		meta: {
+			requiresAuth: true
+		}
 	},
 	{
 		path: '/empire/:accused/with/:weapon',
