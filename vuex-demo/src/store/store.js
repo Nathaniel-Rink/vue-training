@@ -37,6 +37,12 @@ const myStore = new Vuex.Store({
 	mutations: {
 		increment (state) {
 			state.count++
+		},
+		incrementBy(state, obj){
+			state.count =+ obj.incrementCount;
+		},
+		resetCounter(state, obj) {
+			state.count = obj.newCount;
 		}
 	},
 	getters: {

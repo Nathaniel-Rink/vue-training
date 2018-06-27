@@ -1,10 +1,28 @@
 <template>
 	<div class="hello">
-		<button @click="incrementCount">increment</button>
+		<h6 class="mt-5">Counters using various gets</h6>
 		<p>{{countVerbose}}</p>
 		<p>{{countShort}}</p>
 		<p>{{countShorter}}</p>
 		<p>{{count}}</p>
+
+		<h6 class="mt-5">Mutate with $store.commit by 'increment' argument</h6>
+		<button @click="addOne">add 1</button>
+
+		<h6 class="mt-5">Mutate with mapMutation([incrementBy])</h6>
+		<label>Increment By More
+			<br><input v-model="incrementCount">{{incrementCount}}
+		</label>
+		<button @click="incrementBy({incrementCount: incrementCount})">add {{incrementCount}}</button>
+
+		<h6 class="mt-5">Mutate with alias fooDaddy via mapMutation</h6>
+		<label>Reset To
+			<br><input v-model="newCount">{{newCount}}
+		</label>
+		<button @click="fooDaddy({newCount: newCount})">reset to {{newCount}}</button>
+
+		<h6 class="mt-5">Clear it using this.$store.commit with a payload object</h6>
+		<button @click="WIPEITOUT()">WIPE IT OUT</button>
 
 		<div class="m-2">
 			<h4>actors</h4>
@@ -29,17 +47,40 @@
 	//Import mapState & mapGetters where you use it
 	import { mapState } from 'vuex';
 	import { mapGetters } from 'vuex'
+	import { mapMutations } from 'vuex'
 
 	//Import lodash where you use it
 	import _ from 'lodash';
 
 	export default {
 		name: 'HelloWorld',
-		methods: {
-			incrementCount: function(){
-				this.$store.commit('increment');
-			}
-		},
+		methods:
+			_.merge(
+				{
+					addOne: function(){
+
+						// call mutation from $store
+						this.$store.commit('increment');
+					},
+
+					WIPEITOUT(){
+						//call mutation from $store in payload form
+						this.$store.commit({
+							type: 'resetCounter',
+							newCount: 0
+						})
+					}
+				},
+				//Import mutations directly with array so the this.method of same name calls commit('mutation_name')
+				mapMutations([
+					'incrementBy'
+				]),
+
+				//alias mutation commit to this.methogd_name
+				mapMutations({
+					fooDaddy: 'resetCounter'
+				})
+			),
 
 
 		// computed expects an object
@@ -96,7 +137,7 @@
 				mapGetters({
 					myCoolestActor: 'coolestActors'
 				}),
-				
+
 				mapState({
 					// same function as countVebose but in arrow function format
 					countShort: state => state.count,
@@ -114,7 +155,9 @@
 		data: function(){
 			return {
 				showCoolest: false,
-				actorLimit: null
+				actorLimit: null,
+				incrementCount: null,
+				newCount: 0
 			}
 		}
 	}
