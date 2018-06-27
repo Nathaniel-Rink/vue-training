@@ -7,13 +7,18 @@
 		<p>{{count}}</p>
 
 		<div class="m-2">
+			<h4>actors</h4>
 			<ul>
 				<li v-for="actor in renderedActors" :key="actor.name" class="text-left">{{actor.name}}</li>
+			</ul>
+			<h4>actors with getters defined by mapGetters</h4>
+			<ul>
+				<li v-for="actor in duplicateRenderedActors" :key="actor.name" class="text-left">{{actor.name}}</li>
 			</ul>
 			<button @click="showCoolest = !showCoolest">{{showCoolest ? 'show all' : 'show only coolest'}}</button>
 			<p>
 				<label>limit # of actors
-					<br><input v-model="maxActors">{{maxActors}}
+					<br><input v-model="actorLimit">{{actorLimit}}
 				</label>
 			</p>
 		</div>
@@ -21,8 +26,9 @@
 </template>
 
 <script>
-	//Import mapState where you use it
+	//Import mapState & mapGetters where you use it
 	import { mapState } from 'vuex';
+	import { mapGetters } from 'vuex'
 
 	//Import lodash where you use it
 	import _ from 'lodash';
@@ -48,22 +54,34 @@
 						return this.$store.state.count;
 					},
 
-					coolestActors: function(){
+					coolestActorsAlias: function(){
 						//Access getters from the $store.getters prop
 						return this.$store.getters.coolestActors;
 					},
-					limitByMax: function(){
+					limitByMaxAlias: function(){
 						//Access getters from the $store.getters prop
-						return this.$store.getters.maxActors(this.maxActors);
+						return this.$store.getters.maxActors(this.actorLimit);
 					},
 
 					renderedActors: function(){
-						if(this.maxActors){
+						if(this.actorLimit){
 							this.showCoolest = false;
-							return this.limitByMax;
+							return this.limitByMaxAlias;
 						}
 						else if(this.showCoolest){
-							return this.coolestActors;
+							return this.coolestActorsAlias;
+						}
+						else {
+							return this.actors
+						}
+					},
+					duplicateRenderedActors: function(){
+						if(this.actorLimit){
+							this.showCoolest = false;
+							return this.maxActors(this.actorLimit);
+						}
+						else if(this.showCoolest){
+							return this.myCoolestActor;
 						}
 						else {
 							return this.actors
@@ -71,6 +89,14 @@
 					}
 				},
 
+				//use mapGetters just like mapState to easily set up getters
+				mapGetters([
+					'maxActors'
+				]),
+				mapGetters({
+					myCoolestActor: 'coolestActors'
+				}),
+				
 				mapState({
 					// same function as countVebose but in arrow function format
 					countShort: state => state.count,
@@ -88,7 +114,7 @@
 		data: function(){
 			return {
 				showCoolest: false,
-				maxActors: null
+				actorLimit: null
 			}
 		}
 	}
