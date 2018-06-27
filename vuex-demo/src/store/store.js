@@ -44,6 +44,11 @@ const myStore = new Vuex.Store({
 		//Each getter is passed in state and other getters
 		coolestActors: (state, getters) => {
 			return state.actors.filter(actor => actor.coolestEver);
+		},
+
+		//If getter returns a function, you can pass in arguments
+		maxActors: (state) => (max) => {
+			return state.actors.slice(0, max);
 		}
 	}
 });

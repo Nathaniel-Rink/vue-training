@@ -8,9 +8,14 @@
 
 		<div class="m-2">
 			<ul>
-				<li v-for="actor in showCoolest ? coolestActors : actors" :key="actor.name" class="text-left">{{actor.name}}</li>
+				<li v-for="actor in renderedActors" :key="actor.name" class="text-left">{{actor.name}}</li>
 			</ul>
 			<button @click="showCoolest = !showCoolest">{{showCoolest ? 'show all' : 'show only coolest'}}</button>
+			<p>
+				<label>limit # of actors
+					<br><input v-model="maxActors">{{maxActors}}
+				</label>
+			</p>
 		</div>
 	</div>
 </template>
@@ -44,9 +49,25 @@
 					},
 
 					coolestActors: function(){
-
 						//Access getters from the $store.getters prop
 						return this.$store.getters.coolestActors;
+					},
+					limitByMax: function(){
+						//Access getters from the $store.getters prop
+						return this.$store.getters.maxActors(this.maxActors);
+					},
+
+					renderedActors: function(){
+						if(this.maxActors){
+							this.showCoolest = false;
+							return this.limitByMax;
+						}
+						else if(this.showCoolest){
+							return this.coolestActors;
+						}
+						else {
+							return this.actors
+						}
 					}
 				},
 
@@ -66,7 +87,8 @@
 			),
 		data: function(){
 			return {
-				showCoolest: false
+				showCoolest: false,
+				maxActors: null
 			}
 		}
 	}
