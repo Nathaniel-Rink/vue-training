@@ -6,6 +6,12 @@
 		<p>{{countShorter}}</p>
 		<p>{{count}}</p>
 
+		<div class="m-2">
+			<ul>
+				<li v-for="actor in showCoolest ? coolestActors : actors" :key="actor.name" class="text-left">{{actor.name}}</li>
+			</ul>
+			<button @click="showCoolest = !showCoolest">{{showCoolest ? 'show all' : 'show only coolest'}}</button>
+		</div>
 	</div>
 </template>
 
@@ -28,13 +34,19 @@
 		// computed expects an object
 		computed:
 
-			//mapState returns. but need to merge it if we have local computed calcs
+		//mapState returns. but need to merge it if we have local computed calcs
 			_.merge(
 
 				{
 					// typical way to return a state variable
 					countVerbose: function(){
 						return this.$store.state.count;
+					},
+
+					coolestActors: function(){
+
+						//Access getters from the $store.getters prop
+						return this.$store.getters.coolestActors;
 					}
 				},
 
@@ -47,9 +59,16 @@
 				}),
 
 				// mapState can also be passed an array of state property names
-				mapState(['count'])
-			)
-
+				mapState([
+					'count',
+					'actors'
+				])
+			),
+		data: function(){
+			return {
+				showCoolest: false
+			}
+		}
 	}
 </script>
 
