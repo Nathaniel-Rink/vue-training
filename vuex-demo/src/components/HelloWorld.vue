@@ -24,7 +24,7 @@
 		<h6 class="mt-5">Clear it using this.$store.commit with a payload object</h6>
 		<button @click="WIPEITOUT()">WIPE IT OUT</button>
 
-		<div class="m-2">
+		<div class="m-5">
 			<h4>actors</h4>
 			<ul>
 				<li v-for="actor in renderedActors" :key="actor.name" class="text-left">{{actor.name}}</li>
@@ -40,6 +40,18 @@
 				</label>
 			</p>
 		</div>
+
+		<h6 class="mt-5">Logging with Action vs Mutation</h6>
+		<p>{{count}}</p>
+		<p>
+			<button @click="mutateCountWithAsyncDelay()">Mutate Count directly with delay</button>
+		</p>
+		<p>
+			<button @click="updateCountViaAsyncAction()">Update Count via action, but with delay</button>
+		</p>
+		<p>Note that when the mutation handles the asynchronous action, the "log" in console is broken.</p>
+		<p>When mutations are separated to only update data while the action handles the asynchronous business
+		logic, the log works the log works</p>
 	</div>
 </template>
 
@@ -69,6 +81,14 @@
 							type: 'resetCounter',
 							newCount: 0
 						})
+					},
+
+					mutateCountWithAsyncDelay(){
+						this.$store.commit('mutateCountWithAsyncDelay');
+					},
+
+					updateCountViaAsyncAction(){
+						this.$store.dispatch('updateCountAsync')
 					}
 				},
 				//Import mutations directly with array so the this.method of same name calls commit('mutation_name')

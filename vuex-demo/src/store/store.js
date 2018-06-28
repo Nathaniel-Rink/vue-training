@@ -43,6 +43,50 @@ const myStore = new Vuex.Store({
 		},
 		resetCounter(state, obj) {
 			state.count = obj.newCount;
+		},
+		mutateCountWithAsyncDelay (state) {
+			var log1;
+			var log2;
+
+			//Capture Before Value
+			log1 = state.count;
+
+			//Simulate delay from a fetch or something
+			setTimeout(() => {
+				state.count++
+			}, 1000);
+
+			//Capture After Value
+			log2 = state.count;
+
+			//Async in mutation screws up the log
+			console.log(`Starting Count: ${log1}`); //NRHG
+			console.log(`Ending Count: ${log2}`); //NRHG
+		},
+
+		mutateCount (state) {
+			var log1;
+			var log2;
+
+			//Capture Before Value
+			log1 = state.count;
+
+			//Mutation does nothing but update data
+			state.count++;
+
+			//Capture After Value
+			log2 = state.count;
+
+			//Changes logged correctly
+			console.log(`Starting Count: ${log1}`); //NRHG
+			console.log(`Ending Count: ${log2}`); //NRHG
+		}
+	},
+	actions: {
+		updateCountAsync(context){
+			setTimeout(() => {
+				context.commit('mutateCount');
+			}, 1000);
 		}
 	},
 	getters: {
