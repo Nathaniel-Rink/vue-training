@@ -53,6 +53,9 @@
 		<p>Note that when the mutation handles the asynchronous action, the "log" in console is broken.</p>
 		<p>When mutations are separated to only update data while the action handles the asynchronous business
 		logic, the log works the log works</p>
+
+		<h6 class="my-5">This message is from a getter in global state!</h6>
+		<p>{{message}}</p>
 	</div>
 </template>
 
@@ -161,6 +164,11 @@
 						else {
 							return this.actors
 						}
+					},
+					message: function(){
+						//Property Style getters access
+						//For global module!
+						return this.$store.getters.message;
 					}
 				},
 

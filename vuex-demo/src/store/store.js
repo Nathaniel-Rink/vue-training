@@ -8,13 +8,15 @@ import Vue from 'vue';
 
 import actors from './actors-store';
 import count from './count-store';
+import myGlobalStore from './my-global-store';
 
 Vue.use(Vuex);
 
 const myStore = new Vuex.Store({
 	modules: {
 		actors: actors,
-		count: count
+		count: count,
+		global: myGlobalStore
 	}
 });
 
