@@ -54,7 +54,7 @@
 		<p>When mutations are separated to only update data while the action handles the asynchronous business
 		logic, the log works the log works</p>
 
-		<h6 class="my-5">This message is from a getter in global state!</h6>
+		<h6 class="mt-5">This message is from a getter in global state!</h6>
 		<p>{{message}}</p>
 	</div>
 </template>
@@ -77,13 +77,13 @@
 
 						// call mutation from $store
 						console.log(this.$store); //NRHG
-						this.$store.commit('increment');
+						this.$store.commit('count/increment');
 					},
 
 					WIPEITOUT(){
 						//call mutation from $store in payload form
 						this.$store.commit({
-							type: 'resetCounter',
+							type: 'count/resetCounter',
 							newCount: 0
 						})
 					},
@@ -100,13 +100,13 @@
 					}
 				},
 				//Import mutations directly with array so the this.method of same name calls commit('mutation_name')
-				mapMutations([
+				mapMutations('count/', [
 					'incrementBy'
 				]),
 
 				//alias mutation commit to this.methogd_name
 				mapMutations({
-					fooDaddy: 'resetCounter'
+					fooDaddy: 'count/resetCounter'
 				})
 			),
 
