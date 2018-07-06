@@ -15,9 +15,10 @@ Vue.use(Vuex);
 const myStore = new Vuex.Store({
 	modules: {
 		actors: actors,
-		count: count,
 		global: myGlobalStore
 	}
 });
+
+myStore.registerModule('count', count);
 
 export default myStore;

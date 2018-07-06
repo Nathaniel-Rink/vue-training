@@ -76,7 +76,6 @@
 					addOne: function(){
 
 						// call mutation from $store
-						console.log(this.$store); //NRHG
 						this.$store.commit('count/increment');
 					},
 
