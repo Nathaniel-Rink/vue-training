@@ -1,35 +1,36 @@
 <template>
 	<div class="hello">
 		<h6 class="mt-5">Counters using various gets</h6>
-		<p>{{countVerbose}}</p>
-		<p>{{countShort}}</p>
-		<p>{{countShorter}}</p>
-		<p>{{count}}</p>
+		<p>Define countVerbose as a get function in computed: {{countVerbose}}</p>
+		<p>Define countShort with mapState shorthand and ES6 arrow function {{countShort}}</p>
+		<p>Use mapState's 'countShorter: 'count' {{countShorter}}</p>
+		<p>The shortest definition for count is to use a mapState:['count'] array{{count}}</p>
 
 		<h6 class="mt-5">Mutate with $store.commit by 'increment' argument</h6>
 		<button @click="addOne">add 1</button>
 
-		<h6 class="mt-5">Mutate with mapMutation([incrementBy])</h6>
+		<h6 class="mt-5">Mutate with mutation imported from store with mapMutation array format: mapMutation(['incrementBy'])</h6>
 		<label>Increment By More
-			<br><input v-model="incrementCount">{{incrementCount}}
+			<br><input v-model.number="incrementCount">{{incrementCount}}
 		</label>
 		<button @click="incrementBy({incrementCount: incrementCount})">add {{incrementCount}}</button>
 
 		<h6 class="mt-5">Mutate with alias fooDaddy via mapMutation</h6>
 		<label>Reset To
-			<br><input v-model="newCount">{{newCount}}
+			<br><input v-model.number="newCount">{{newCount}}
 		</label>
 		<button @click="fooDaddy({newCount: newCount})">reset to {{newCount}}</button>
 
 		<h6 class="mt-5">Clear it using this.$store.commit with a payload object</h6>
 		<button @click="WIPEITOUT()">WIPE IT OUT</button>
 
-		<div class="m-5">
+		<div class="m-5 text-left">
 			<h4>actors</h4>
+			<p>This renderedActors list uses computed properties defined by directly linking to $store.getters['name']</p>
 			<ul>
 				<li v-for="actor in renderedActors" :key="actor.name" class="text-left">{{actor.name}}</li>
 			</ul>
-			<h4>actors with getters defined by mapGetters</h4>
+			<p>This renderedActors list uses computed properties defined using the mapState getters helper</p>
 			<ul>
 				<li v-for="actor in duplicateRenderedActors" :key="actor.name" class="text-left">{{actor.name}}</li>
 			</ul>
@@ -72,6 +73,7 @@
 					addOne: function(){
 
 						// call mutation from $store
+						console.log(this.$store); //NRHG
 						this.$store.commit('increment');
 					},
 
@@ -84,11 +86,14 @@
 					},
 
 					mutateCountWithAsyncDelay(){
-						this.$store.commit('mutateCountWithAsyncDelay');
+
+						//Look in the console and see that simulating an async delay breaks logging
+						//The mutation should be free of async implications
+						this.$store.commit('count/mutateCountWithAsyncDelay');
 					},
 
 					updateCountViaAsyncAction(){
-						this.$store.dispatch('updateCountAsync')
+						this.$store.dispatch('count/updateCountAsync')
 					}
 				},
 				//Import mutations directly with array so the this.method of same name calls commit('mutation_name')
@@ -112,24 +117,29 @@
 				{
 					// typical way to return a state variable
 					countVerbose: function(){
-						return this.$store.state.count;
+						return this.$store.state.count.count;
 					},
 
 					coolestActorsAlias: function(){
-						//Access getters from the $store.getters prop
-						return this.$store.getters.coolestActors;
+						//Access getters from the $store.getters
+						// 'actors' is the namespace defined in the module import in store
+						return this.$store.getters['actors/coolestActors'];
 					},
 					limitByMaxAlias: function(){
-						//Access getters from the $store.getters prop
-						return this.$store.getters.maxActors(this.actorLimit);
+						//Access getters from the $store.getters prop. Pass in an argument
+						return this.$store.getters['actors/maxActors'](this.actorLimit);
 					},
 
 					renderedActors: function(){
 						if(this.actorLimit){
 							this.showCoolest = false;
+
+							//limitByMaxAlias is defined directly by $store.getters above(with an argument)
 							return this.limitByMaxAlias;
 						}
 						else if(this.showCoolest){
+
+							//coolestActorsAlias is defined directly by $store.getters above
 							return this.coolestActorsAlias;
 						}
 						else {
@@ -139,9 +149,13 @@
 					duplicateRenderedActors: function(){
 						if(this.actorLimit){
 							this.showCoolest = false;
-							return this.maxActors(this.actorLimit);
+
+							//this['actors/maxActors'] is imported in mapGetters array format below
+							return this['actors/maxActors'](this.actorLimit);
 						}
 						else if(this.showCoolest){
+
+							//this['actors/maxActors'] is defined in mapGetters property form below
 							return this.myCoolestActor;
 						}
 						else {
@@ -150,12 +164,14 @@
 					}
 				},
 
-				//use mapGetters just like mapState to easily set up getters
+				//use mapGetters just like mapState to easily set up getters in array format
 				mapGetters([
-					'maxActors'
+					'actors/maxActors'
 				]),
 				mapGetters({
-					myCoolestActor: 'coolestActors'
+					//name the getter prop myCoolestActor and pull it from the store with a string format.
+					// 'actors' is the namespace defined in the module import in store
+					myCoolestActor: 'actors/coolestActors'
 				}),
 
 				mapState({
@@ -168,9 +184,11 @@
 
 				// mapState can also be passed an array of state property names
 				mapState([
-					'count',
+					'count'
+				]),
+				mapState( 'actors', [
 					'actors'
-				])
+				]),
 			),
 		data: function(){
 			return {
